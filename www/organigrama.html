@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="cubantech" ng-controller="cubantechController">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta ng-repeat="meta in config.head.metadata" name="{{meta.name}}" content="{{meta.content}}">
+    <link rel="icon" href="img/favicon.ico">
+
+    <title ng-bind="config.head.title"></title>
+
+    <link href="css/site.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/jquery.orgchart.min.css">
+
+    <script src="js/ie-emulation-modes-warning.js"></script>
+
+    <!--[if lt IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link href="css/carousel.css" rel="stylesheet" />
+    <link href="css/flags.css" rel="stylesheet" />
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top affix" data-spy="affix" data-offset="{top:500}">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">&nbsp;</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav text-center">
+            <!--li class="active text-uppercase"><a href="#">
+              <span class="nav-item-main">Home</span>
+            </a></li-->
+            <li ng-repeat="navItem in config.navBar" class="dropdown">
+              <a href="#" class="dropdown-toggle text-uppercase" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <span class="nav-item-main" ng-bind="config.dictionary[lang][navItem.label]"></span>
+                <span class="caret" ng-show="navItem.options.length > 0" ></span>
+              </a>
+              <ul class="dropdown-menu">
+                <li ng-repeat="link in navItem.options" role="{{link.role}}" class="{{link.class}}">
+                  <a href="{{link.href}}">
+                    <span ng-show="!!link.icon" class="btn-primary img-circle icon-{{link.icon}} hidden-xs hidden-sm"></span>
+                    {{config.dictionary[lang][link.label]}}
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle text-uppercase nav-item-main" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="flag flag-{{lang}}"></span> <span class="visible-lg-inline-block" ng-bind="config.language[lang]"></span><span ng-bind="'( ' + lang + ' )'" class="highlighted visible-lg-inline-block"></span> <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li ng-repeat="lang in config.langList"><a href="#{{lang}}"><span class="flag flag-{{lang}}"></span> {{config.langMap[lang]}}</a></li>
+                <!--li><a href="#es"><span class="flag flag-es"></span> Español</a></li>
+                <li><a href="#fr"><span class="flag flag-fr"></span> Français</a></li-->
+              </ul>
+            </li>
+          </ul>
+          <ul ng-show="config.contacts.length > 0" class="nav navbar-nav navbar-right">
+            <p class="navbar-text visible-lg-inline-block" ng-bind="config.dictionary[lang]['followUs']" style="font-style: italic;"></p>
+            <p class="navbar-text social-icons">
+              <a ng-repeat="contact in config.contacts" href="{{contact.href}}" class="icon-{{contact.code}} icon-inverse btn-primary img-circle"></a>
+              <!--a href="https://twitter.com/TheCubanTech" class="icon-twitter icon-inverse btn-primary img-circle"></a>
+              <a href="https://www.facebook.com/TheCubanTech" class="icon-fb icon-inverse btn-primary img-circle"></a>
+              <a href="#" class="icon-youtube icon-inverse btn-primary img-circle"></a-->
+            </p>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container marketing organigram" id="organigram">
+    </div>
+
+    <footer id="footer">
+      <div class="container-fluid">
+        <div id="footer-links" class="container text-center">
+          <div class="row">
+            <div ng-repeat="(ftIndex, ftElem) in config.footer" class="col-md-2 col-sm-3 col-xs-5" ng-class="{'col-md-offset-1' : ftIndex === 0}">
+              <h4 class="text-uppercase text-info" ng-bind="config.dictionary[lang][ftElem.header]"></h4>
+              <div class="row">
+                <div class="col-xs-6 col-sm-12" ng-repeat="listItem in ftElem.items">
+                  <ul class="list-unstyled">
+                    <li ng-repeat="listItem1 in listItem"><a href="{{listItem1.href}}" ng-bind="config.dictionary[lang][listItem1.label]"></a></li>
+                </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-offset-3 col-md-2 col-sm-offset-2 col-sm-1 hidden-xs">
+              <div id="footer-logo">&nbsp;</div>
+            </div>
+          </div>
+        </div>
+        <div id="footer-copy" class="row bg-primary">
+          <div class="col-md-12">
+            <hr />
+            <p class="pull-right"><a href="#"><span class="glyphicon glyphicon-chevron-up"></span></a></p>
+            <p class="text-center"> &nbsp; &nbsp; &copy; {{config.thisYear}} {{config.signature[lang]}}</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <div id="myModal" class="modal fade">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times; </button>
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Header</h4>
+          </div>
+          <div class="modal-body panel panel-default">
+            <div class="row center-block">
+              <img class="modal-avatar" src="img/anonimUser.png" alt="">
+            </div>
+            <div class="hidden-xs hidden-sm panel-caret-bottom">
+              <div class="panel-caret-inner"></div>
+            </div>
+            <div class="panel-caret-bottom visible-xs visible-sm">
+              <div class="panel-caret-inner"></div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="row">
+              <div class="col-xs-12">
+                <h1 class="modal-username">John Doe</h1>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12">
+                <h4 class="modal-usertype">Posición / Empleado</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 modal-userdescription">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente, pariatur, aliquam. Cupiditate repudiandae corporis repellat aliquam, illum at, labore, dolor quidem repellendus sunt perspiciatis quam voluptatem quo placeat nulla aspernatur! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum modi alias, hic aspernatur minus facilis vel sit, iste. Minus facilis saepe ducimus. Ipsum blanditiis similique, dicta, aut maiores fuga atque.
+              </div>
+            </div>
+            <div class="row">
+              <ul class="col-xs-12 modal-contactlist">
+                <li class="orgIcon fa fa-envelope">
+                  <span class="modal-usercontact">isaac@gmail.com</span>
+                </li>
+                <li class="orgIcon fa fa-twitter">
+                  <span class="modal-usercontact">@isaacvr96</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script-->
+    <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery.orgchart.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/config.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script src="js/holder.min.js"></script>
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>

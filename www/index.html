@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="cubantech" ng-controller="cubantechController">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="The Cuban Tech Group is a non-profit providing a foundation for open, collaborative technology development as well as promotion of use of technologic products and services; providing outreach and education to help more people access computing and technology making, especially among youth and underserved communities; creating an independent legal entity to which companies and individuals can donate resources and be assured that they will be used to develop the Cuban (private) technology ecosystem; providing means for Cuban entrepreneurs to know how to shelter their business from legal suits directed at technology development projects; protecting affiliated technology brands.">
-    <meta name="author" content="The Cuban Tech Group">
+    <meta ng-repeat="meta in config.head.metadata" name="{{meta.name}}" content="{{meta.content}}">
     <link rel="icon" href="img/favicon.ico">
 
-    <title>The homepage of the Cuban Tech Group</title>
+    <title ng-bind="config.head.title"></title>
 
-    <link href="css/site.min.css" rel="stylesheet">
+    <link href="css/site.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/jquery.orgchart.min.css">
 
     <script src="js/ie-emulation-modes-warning.js"></script>
 
@@ -23,7 +24,7 @@
     <link href="css/flags.css" rel="stylesheet" />
   </head>
   <body>
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-fixed-top affix" data-spy="affix" data-offset="{top:500}">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -36,92 +37,39 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav text-center">
-            <li class="active text-uppercase"><a href="#">
+            <!--li class="active text-uppercase"><a href="#">
               <span class="nav-item-main">Home</span>
-            </a></li>
-            <li class="dropdown">
+            </a></li-->
+            <li ng-repeat="navItem in config.navBar" class="dropdown">
               <a href="#" class="dropdown-toggle text-uppercase" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                <span class="nav-item-main">About</span>
-                <span class="caret"></span>
+                <span class="nav-item-main" ng-bind="config.dictionary[lang][navItem.label]"></span>
+                <span class="caret" ng-show="navItem.options.length > 0" ></span>
               </a>
               <ul class="dropdown-menu">
-                <li><a href="about.html">Overview</a></li>
-                <li><a href="sponsors.html">Sponsorship</a></li>
-                <li><a href="faq.html">FAQ</a></li>
-                <li><a href="contact.html">Contact us</a></li>
-                <li role="separator" class="divider hidden-xs hidden-sm"></li>
-                <li class="dropdown-header hidden-xs hidden-sm">Governance</li>
-                <li><a href="legal.html">Constitution</a></li>
-                <li><a href="bylaws.html">Bylaws</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle text-uppercase" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                <span class="nav-item-main">Community</span>
-                <span class="caret">
-              </span></a>
-              <ul class="dropdown-menu">
-                <li><a href="events.html#meetups">Meet-ups</a></li>
-                <li><a href="events.html#conf">Conferences</a></li>
-                <li><a href="events.html#collab">Collaborations</a></li>
-                <li role="separator" class="divider hidden-xs hidden-sm"></li>
-                <li><a href="participate.html">Get involved</a></li>
-                <li><a href="coc.html">Code of Conduct</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle text-uppercase" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                <span class="nav-item-main">Support us</span>
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                <li><a href="sponsors.html">Sponsorship</a></li>
-                <li><a href="donate.html">Donations</a></li>
-                <li><a href="store.html">Buy Stuff</a></li>
-                <li><a href="thanks.html">Thanks</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle text-uppercase" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                <span class="nav-item-main">News</span>
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a href="http://blog.cuban.tech">
-                    <span class="btn-primary img-circle icon-blogger hidden-xs hidden-sm"></span>
-                    Blog
-                  </a>
-                </li>
-                <li>
-                  <a href="http://twitter.com/TheCubanTech">
-                    <span class="btn-primary img-circle icon-twitter hidden-xs hidden-sm"></span>
-                    Twitter feed
-                  </a>
-                </li>
-                <li>
-                  <a href="http://www.facebook.com/CubanTech">
-                    <span class="btn-primary img-circle icon-fb hidden-xs hidden-sm"></span>
-                    Facebook
+                <li ng-repeat="link in navItem.options" role="{{link.role}}" class="{{link.class}}">
+                  <a href="{{link.href}}">
+                    <span ng-show="!!link.icon" class="btn-primary img-circle icon-{{link.icon}} hidden-xs hidden-sm"></span>
+                    {{config.dictionary[lang][link.label]}}
                   </a>
                 </li>
               </ul>
             </li>
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle text-uppercase" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="flag flag-gb"></span> <span class="visible-lg-inline-block">English</span> <span class="caret"></span></a>
+              <a href="#" class="dropdown-toggle text-uppercase nav-item-main" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="flag flag-{{lang}}"></span> <span class="visible-lg-inline-block" ng-bind="config.language[lang]"></span><span ng-bind="'( ' + lang + ' )'" class="highlighted visible-lg-inline-block"></span> <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="#es"><span class="flag flag-es"></span> Español</a></li>
-                <li><a href="#fr"><span class="flag flag-fr"></span> Français</a></li>
+                <li ng-repeat="lang in config.langList"><a href="#{{lang}}"><span class="flag flag-{{lang}}"></span> {{config.langMap[lang]}}</a></li>
+                <!--li><a href="#es"><span class="flag flag-es"></span> Español</a></li>
+                <li><a href="#fr"><span class="flag flag-fr"></span> Français</a></li-->
               </ul>
             </li>
           </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <p class="navbar-text visible-lg-inline-block">Follow us</p>
+          <ul ng-show="config.contacts.length > 0" class="nav navbar-nav navbar-right">
+            <p class="navbar-text visible-lg-inline-block" ng-bind="config.dictionary[lang]['followUs']" style="font-style: italic;"></p>
             <p class="navbar-text social-icons">
-              <a href="https://blog.cuban.tech" class="icon-blogger icon-inverse btn-primary img-circle"></a>
-              <a href="https://twitter.com/TheCubanTech" class="icon-twitter icon-inverse btn-primary img-circle"></a>
+              <a ng-repeat="contact in config.contacts" href="{{contact.href}}" class="icon-{{contact.code}} icon-inverse btn-primary img-circle"></a>
+              <!--a href="https://twitter.com/TheCubanTech" class="icon-twitter icon-inverse btn-primary img-circle"></a>
               <a href="https://www.facebook.com/TheCubanTech" class="icon-fb icon-inverse btn-primary img-circle"></a>
-              <a href="#" class="icon-youtube icon-inverse btn-primary img-circle"></a>
+              <a href="#" class="icon-youtube icon-inverse btn-primary img-circle"></a-->
             </p>
           </ul>
         </div>
@@ -130,41 +78,17 @@
 
     <div id="myCarousel" class="carousel slide" data-ride="carousel">
       <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
+        <li ng-repeat="(index, slide) in config.carousel" data-target="#myCarousel" data-slide-to="{{index}}" class="{{slide.class}}"></li>
       </ol>
       <div class="carousel-inner" role="listbox">
-        <div class="item active">
-          <img class="first-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="First slide">
+        <div class="item {{slide.class}}" ng-repeat="slide in config.carousel">
+          <img class="first-slide" src="{{slide.imageUrl}}" alt="{{slide.alt}}">
           <div class="container">
             <div class="carousel-caption">
-              <h1>Example headline.</h1>
+              <h1> {{ slide.headline | uppercase }} </h1>
               <hr/>
-              <p>Note: If you're viewing this page via a <code>file://</code> URL, the "next" and "previous" Glyphicon buttons on the left and right might not load/display properly due to web browser security rules.</p>
-              <p><a class="btn btn-lg btn-default" href="#" role="button">Sign up today</a></p>
-            </div>
-          </div>
-        </div>
-        <div class="item">
-          <img class="second-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Second slide">
-          <div class="container">
-            <div class="carousel-caption">
-              <h1>Another example headline.</h1>
-              <hr/>
-              <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-              <p><a class="btn btn-lg btn-default" href="#" role="button">Learn more</a></p>
-            </div>
-          </div>
-        </div>
-        <div class="item">
-          <img class="third-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Third slide">
-          <div class="container">
-            <div class="carousel-caption">
-              <h1>One more for good measure.</h1>
-              <hr/>
-              <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-              <p><a class="btn btn-lg btn-default" href="#" role="button">Browse gallery</a></p>
+              <p class="content" ng-bind="slide.content"></p>
+              <p><a ng-repeat="btn in slide.buttons" class="btn btn-lg btn-default" href="{{btn.href}}" role="button">{{ btn.text | uppercase }}</a></p>
             </div>
           </div>
         </div>
@@ -180,63 +104,45 @@
     </div>
     <div class="container marketing">
       <div class="row">
-        <div class="col-lg-4">
-          <div class="featurette-panel panel panel-default">
+        <div class="col-lg-4" ng-repeat="mk in config.marketing[lang]">
+          <div class="featurette-panel panel panel-default" ng-style="config.visual.marketing">
             <div class="center-block featurette-container">
-              <span class="icon-tech img-circle featurette-icon"></span>
+              <span class="icon-{{mk.icon}} img-circle featurette-icon"></span>
             </div>
-            <h2>Technology</h2>
-            <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
-            <p><a class="btn btn-primary text-uppercase" href="#" role="button">View details &raquo;</a></p>
-          </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="featurette-panel panel panel-default">
-            <div class="center-block featurette-container">
-              <span class="icon-edu img-circle featurette-icon"></span>
-            </div>
-            <h2>Education</h2>
-            <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
-            <p><a class="btn btn-primary text-uppercase" href="#" role="button">View details &raquo;</a></p>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="featurette-panel panel panel-default">
-            <div class="center-block featurette-container">
-              <span class="icon-users img-circle featurette-icon"></span>
-            </div>
-            <h2>Community</h2>
-            <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-            <p><a class="btn btn-primary text-uppercase" href="#" role="button">View details &raquo;</a></p>
+            <h2 ng-bind="mk.label"></h2>
+            <hr class="dark">
+            <p ng-bind="mk.content"></p>
+            <p><a class="btn btn-primary text-uppercase" href="#" role="button">{{mk.btnLabel}} &raquo;</a></p>
           </div>
         </div>
       </div>
     </div>
     <div class="container-fluid marketing marketing-inverse">
       <div class="container">
-        <div class="row featurette">
-          <div class="col-md-5 col-md-push-7">
-            <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
-          </div>
-          <div class="col-md-7 col-md-pull-5">
-            <div class="panel panel-default">
-              <div class="panel-caret-right hidden-xs hidden-sm">
-                <div class="panel-caret-inner"></div>
-              </div>
-              <div class="panel-caret-top visible-xs visible-sm">
-                <div class="panel-caret-inner"></div>
-              </div>
-              <div class="panel-body">
-                <h2 class="featurette-heading">First featurette heading. <span class="text-muted">It'll blow your mind.</span></h2>
-                <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+        <div ng-repeat="(idx, ft) in config.featurette">
+          <div class="row featurette">
+            <div class="col-md-5" ng-class="{'col-md-push-7' : idx % 2 == 1}">
+              <img class="featurette-image img-responsive center-block" src="{{ft.image}}" alt="Generic placeholder image">
+            </div>
+            <div class="col-md-7" ng-class="{'col-md-pull-5' : idx % 2 == 1}">
+              <div class="panel panel-default">
+                <div class="hidden-xs hidden-sm" ng-class="{'panel-caret-left' : idx % 2 == 0, 'panel-caret-right' : idx % 2 == 1}">
+                  <div class="panel-caret-inner"></div>
+                </div>
+                <div class="panel-caret-top visible-xs visible-sm">
+                  <div class="panel-caret-inner"></div>
+                </div>
+                <div class="panel-body">
+                  <h2 class="featurette-heading">{{ft.heading}} <span class="text-muted" ng-bind="ft.headingMuted"></span></h2>
+                  <p class="lead" ng-bind="ft.content"></p>
+                </div>
               </div>
             </div>
           </div>
+          <hr class="featurette-divider text-muted" ng-show="idx < config.featurette.length - 1">
         </div>
-  
-        <hr class="featurette-divider text-muted">
-  
-        <div class="row featurette">
+
+        <!--div class="row featurette">
           <div class="col-md-5">
             <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
           </div>
@@ -255,9 +161,9 @@
             </div>
           </div>
         </div>
-  
+
         <hr class="featurette-divider text-muted">
-  
+
         <div class="row featurette">
           <div class="col-md-5 col-md-push-7">
             <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
@@ -276,7 +182,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div-->
       </div>
     </div>
 
@@ -284,20 +190,17 @@
       <div class="container-fluid">
         <div id="footer-links" class="container text-center">
           <div class="row">
-            <div class="col-md-offset-1 col-md-2 col-sm-3 col-xs-5">
-              <h4 class="text-uppercase text-info">About</h4>
-              <ul class="list-unstyled">
-                <li><a href="about.html">Overview</a></li>
-                <li><a href="sponsors.html">Sponsorship</a></li>
-                <li><a href="faq.html">FAQ</a></li>
-                <li><a href="contact.html">Contact us</a></li>
-                <li><a href="legal.html">Constitution</a></li>
-                <li><a href="bylaws.html">Bylaws</a></li>
-                <li><a href="privacy.html">Privacy</a></li>
-                <li><a href="tos.html">Terms</a></li>
-              </ul>
+            <div ng-repeat="(ftIndex, ftElem) in config.footer" class="col-md-2 col-sm-3 col-xs-5" ng-class="{'col-md-offset-1' : ftIndex === 0}">
+              <h4 class="text-uppercase text-info" ng-bind="config.dictionary[lang][ftElem.header]"></h4>
+              <div class="row">
+                <div class="col-xs-6 col-sm-12" ng-repeat="listItem in ftElem.items">
+                  <ul class="list-unstyled">
+                    <li ng-repeat="listItem1 in listItem"><a href="{{listItem1.href}}" ng-bind="config.dictionary[lang][listItem1.label]"></a></li>
+                </ul>
+                </div>
+              </div>
             </div>
-            <div class="col-md-2 col-sm-3 col-xs-5">
+            <!--div class="col-md-2 col-sm-3 col-xs-5">
               <h4 class="text-uppercase text-info">Support us</h4>
               <ul class="list-unstyled">
                 <li><a href="sponsors.html">Sponsorship</a></li>
@@ -323,7 +226,7 @@
                   </ul>
                 </div>
               </div>
-            </div>
+            </div-->
             <div class="col-md-offset-3 col-md-2 col-sm-offset-2 col-sm-1 hidden-xs">
               <div id="footer-logo">&nbsp;</div>
             </div>
@@ -333,14 +236,20 @@
           <div class="col-md-12">
             <hr />
             <p class="pull-right"><a href="#"><span class="glyphicon glyphicon-chevron-up"></span></a></p>
-            <p class="text-center"> &nbsp; &nbsp; &copy; 2016 The Cuban Tech Group. All rights reserved.</p>
+            <p class="text-center"> &nbsp; &nbsp; &copy; {{config.thisYear}} {{config.signature[lang]}}</p>
           </div>
         </div>
       </div>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <!--script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script-->
+    <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery.orgchart.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/config.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
     <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
     <script src="js/holder.min.js"></script>
     <script src="js/ie10-viewport-bug-workaround.js"></script>
