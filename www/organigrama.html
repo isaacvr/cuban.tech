@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta ng-repeat="meta in config.head.metadata" name="{{meta.name}}" content="{{meta.content}}">
+    <meta ng-repeat="meta in head.metadata" name="{{meta.name}}" content="{{meta.content}}">
     <link rel="icon" href="img/favicon.ico">
 
-    <title ng-bind="config.head.title"></title>
+    <title ng-bind="head.title"></title>
 
     <link href="css/site.css" rel="stylesheet">
     <link rel="stylesheet" href="css/font-awesome.min.css">
@@ -40,33 +40,33 @@
             <!--li class="active text-uppercase"><a href="#">
               <span class="nav-item-main">Home</span>
             </a></li-->
-            <li ng-repeat="navItem in config.navBar" class="dropdown">
+            <li ng-repeat="navItem in navBar" class="dropdown">
               <a href="#" class="dropdown-toggle text-uppercase" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                <span class="nav-item-main" ng-bind="config.dictionary[lang][navItem.label]"></span>
+                <span class="nav-item-main" ng-bind="navItem.label"></span>
                 <span class="caret" ng-show="navItem.options.length > 0" ></span>
               </a>
               <ul class="dropdown-menu">
                 <li ng-repeat="link in navItem.options" role="{{link.role}}" class="{{link.class}}">
                   <a href="{{link.href}}">
                     <span ng-show="!!link.icon" class="btn-primary img-circle icon-{{link.icon}} hidden-xs hidden-sm"></span>
-                    {{config.dictionary[lang][link.label]}}
+                    {{link.label}}
                   </a>
                 </li>
               </ul>
             </li>
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle text-uppercase nav-item-main" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="flag flag-{{lang}}"></span> <span class="visible-lg-inline-block" ng-bind="config.language[lang]"></span><span ng-bind="'( ' + lang + ' )'" class="highlighted visible-lg-inline-block"></span> <span class="caret"></span></a>
+              <a href="#" class="dropdown-toggle text-uppercase nav-item-main" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="flag flag-{{lang}}"></span> <span class="visible-lg-inline-block" ng-bind="general.language"></span><span ng-bind="'( ' + lang + ' )'" class="highlighted visible-lg-inline-block"></span> <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li ng-repeat="lang in config.langList"><a href="#{{lang}}"><span class="flag flag-{{lang}}"></span> {{config.langMap[lang]}}</a></li>
+                <li ng-repeat="lng in langList" ng-click="useLanguage(lng)"><a href="#"><span class="flag flag-{{lng}}"></span> {{langMap[lng]}}</a></li>
                 <!--li><a href="#es"><span class="flag flag-es"></span> Español</a></li>
                 <li><a href="#fr"><span class="flag flag-fr"></span> Français</a></li-->
               </ul>
             </li>
           </ul>
-          <ul ng-show="config.contacts.length > 0" class="nav navbar-nav navbar-right">
-            <p class="navbar-text visible-lg-inline-block" ng-bind="config.dictionary[lang]['followUs']" style="font-style: italic;"></p>
+          <ul ng-show="contacts.length > 0" class="nav navbar-nav navbar-right">
+            <p class="navbar-text visible-lg-inline-block" ng-bind="general.followUs" style="font-style: italic;"></p>
             <p class="navbar-text social-icons">
-              <a ng-repeat="contact in config.contacts" href="{{contact.href}}" class="icon-{{contact.code}} icon-inverse btn-primary img-circle"></a>
+              <a ng-repeat="contact in contacts" href="{{contact.href}}" class="icon-{{contact.code}} icon-inverse btn-primary img-circle"></a>
               <!--a href="https://twitter.com/TheCubanTech" class="icon-twitter icon-inverse btn-primary img-circle"></a>
               <a href="https://www.facebook.com/TheCubanTech" class="icon-fb icon-inverse btn-primary img-circle"></a>
               <a href="#" class="icon-youtube icon-inverse btn-primary img-circle"></a-->
@@ -83,12 +83,12 @@
       <div class="container-fluid">
         <div id="footer-links" class="container text-center">
           <div class="row">
-            <div ng-repeat="(ftIndex, ftElem) in config.footer" class="col-md-2 col-sm-3 col-xs-5" ng-class="{'col-md-offset-1' : ftIndex === 0}">
-              <h4 class="text-uppercase text-info" ng-bind="config.dictionary[lang][ftElem.header]"></h4>
+            <div ng-repeat="(ftIndex, ftElem) in footer" class="col-md-2 col-sm-3 col-xs-5" ng-class="{'col-md-offset-1' : ftIndex === 0}">
+              <h4 class="text-uppercase text-info" ng-bind="ftElem.header"></h4>
               <div class="row">
                 <div class="col-xs-6 col-sm-12" ng-repeat="listItem in ftElem.items">
                   <ul class="list-unstyled">
-                    <li ng-repeat="listItem1 in listItem"><a href="{{listItem1.href}}" ng-bind="config.dictionary[lang][listItem1.label]"></a></li>
+                    <li ng-repeat="listItem1 in listItem"><a href="{{listItem1.href}}" ng-bind="listItem1.label"></a></li>
                 </ul>
                 </div>
               </div>
@@ -102,7 +102,7 @@
           <div class="col-md-12">
             <hr />
             <p class="pull-right"><a href="#"><span class="glyphicon glyphicon-chevron-up"></span></a></p>
-            <p class="text-center"> &nbsp; &nbsp; &copy; {{config.thisYear}} {{config.signature[lang]}}</p>
+            <p class="text-center"> &nbsp; &nbsp; &copy; {{thisYear}} {{signature}}</p>
           </div>
         </div>
       </div>
@@ -113,11 +113,11 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">Header</h4>
+            <h4 class="modal-title" ng-bind="userSelected.charge"></h4>
           </div>
           <div class="modal-body panel panel-default">
             <div class="row center-block">
-              <img class="modal-avatar" src="img/anonimUser.png" alt="">
+              <img class="modal-avatar" src="{{userSelected.avatar}}" alt="">
             </div>
             <div class="hidden-xs hidden-sm panel-caret-bottom">
               <div class="panel-caret-inner"></div>
@@ -129,27 +129,26 @@
           <div class="modal-footer">
             <div class="row">
               <div class="col-xs-12">
-                <h1 class="modal-username">John Doe</h1>
+                <h1 class="modal-username" ng-bind="userSelected.name"></h1>
               </div>
             </div>
             <div class="row">
               <div class="col-xs-12">
-                <h4 class="modal-usertype">Posición / Empleado</h4>
+                <h4 class="modal-usertype" ng-bind="userSelected.charge"></h4>
               </div>
             </div>
             <div class="row">
-              <div class="col-xs-12 modal-userdescription">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente, pariatur, aliquam. Cupiditate repudiandae corporis repellat aliquam, illum at, labore, dolor quidem repellendus sunt perspiciatis quam voluptatem quo placeat nulla aspernatur! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum modi alias, hic aspernatur minus facilis vel sit, iste. Minus facilis saepe ducimus. Ipsum blanditiis similique, dicta, aut maiores fuga atque.
+              <div class="col-xs-12 modal-userdescription" ng-bind="userSelected.description">
               </div>
             </div>
             <div class="row">
               <ul class="col-xs-12 modal-contactlist">
-                <li class="orgIcon fa fa-envelope">
-                  <span class="modal-usercontact">isaac@gmail.com</span>
+                <li ng-repeat="(key, userContact) in userSelected.contacts" class="orgIcon fa fa-{{key}}" ng-show="userContact != '' ">
+                  <span class="modal-usercontact" ng-bind="userContact"></span>
                 </li>
-                <li class="orgIcon fa fa-twitter">
+                <!--li class="orgIcon fa fa-twitter">
                   <span class="modal-usercontact">@isaacvr96</span>
-                </li>
+                </li-->
               </ul>
             </div>
           </div>
@@ -163,8 +162,8 @@
     <script type="text/javascript" src="js/jquery.orgchart.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/angular.min.js"></script>
-    <script type="text/javascript" src="js/config.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
+
     <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
     <script src="js/holder.min.js"></script>
     <script src="js/ie10-viewport-bug-workaround.js"></script>

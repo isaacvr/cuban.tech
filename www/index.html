@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta ng-repeat="meta in config.head.metadata" name="{{meta.name}}" content="{{meta.content}}">
+    <meta ng-repeat="meta in head.metadata" name="{{meta.name}}" content="{{meta.content}}">
     <link rel="icon" href="img/favicon.ico">
 
-    <title ng-bind="config.head.title"></title>
+    <title ng-bind="head.title"></title>
 
     <link href="css/site.css" rel="stylesheet">
     <link rel="stylesheet" href="css/font-awesome.min.css">
@@ -40,33 +40,33 @@
             <!--li class="active text-uppercase"><a href="#">
               <span class="nav-item-main">Home</span>
             </a></li-->
-            <li ng-repeat="navItem in config.navBar" class="dropdown">
+            <li ng-repeat="navItem in navBar" class="dropdown">
               <a href="#" class="dropdown-toggle text-uppercase" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                <span class="nav-item-main" ng-bind="config.dictionary[lang][navItem.label]"></span>
+                <span class="nav-item-main" ng-bind="navItem.label"></span>
                 <span class="caret" ng-show="navItem.options.length > 0" ></span>
               </a>
               <ul class="dropdown-menu">
                 <li ng-repeat="link in navItem.options" role="{{link.role}}" class="{{link.class}}">
                   <a href="{{link.href}}">
                     <span ng-show="!!link.icon" class="btn-primary img-circle icon-{{link.icon}} hidden-xs hidden-sm"></span>
-                    {{config.dictionary[lang][link.label]}}
+                    {{link.label}}
                   </a>
                 </li>
               </ul>
             </li>
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle text-uppercase nav-item-main" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="flag flag-{{lang}}"></span> <span class="visible-lg-inline-block" ng-bind="config.language[lang]"></span><span ng-bind="'( ' + lang + ' )'" class="highlighted visible-lg-inline-block"></span> <span class="caret"></span></a>
+              <a href="#" class="dropdown-toggle text-uppercase nav-item-main" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="flag flag-{{lang}}"></span> <span class="visible-lg-inline-block" ng-bind="general.language"></span><span ng-bind="'( ' + lang + ' )'" class="highlighted visible-lg-inline-block"></span> <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li ng-repeat="lang in config.langList"><a href="#{{lang}}"><span class="flag flag-{{lang}}"></span> {{config.langMap[lang]}}</a></li>
+                <li ng-repeat="lang in langList"><a href="#{{lang}}"><span class="flag flag-{{lang}}"></span> {{langMap[lang]}}</a></li>
                 <!--li><a href="#es"><span class="flag flag-es"></span> Español</a></li>
                 <li><a href="#fr"><span class="flag flag-fr"></span> Français</a></li-->
               </ul>
             </li>
           </ul>
-          <ul ng-show="config.contacts.length > 0" class="nav navbar-nav navbar-right">
+          <ul ng-show="contacts.length > 0" class="nav navbar-nav navbar-right">
             <p class="navbar-text visible-lg-inline-block" ng-bind="config.dictionary[lang]['followUs']" style="font-style: italic;"></p>
             <p class="navbar-text social-icons">
-              <a ng-repeat="contact in config.contacts" href="{{contact.href}}" class="icon-{{contact.code}} icon-inverse btn-primary img-circle"></a>
+              <a ng-repeat="contact in contacts" href="{{contact.href}}" class="icon-{{contact.code}} icon-inverse btn-primary img-circle"></a>
               <!--a href="https://twitter.com/TheCubanTech" class="icon-twitter icon-inverse btn-primary img-circle"></a>
               <a href="https://www.facebook.com/TheCubanTech" class="icon-fb icon-inverse btn-primary img-circle"></a>
               <a href="#" class="icon-youtube icon-inverse btn-primary img-circle"></a-->
@@ -78,10 +78,10 @@
 
     <div id="myCarousel" class="carousel slide" data-ride="carousel">
       <ol class="carousel-indicators">
-        <li ng-repeat="(index, slide) in config.carousel" data-target="#myCarousel" data-slide-to="{{index}}" class="{{slide.class}}"></li>
+        <li ng-repeat="(index, slide) in carousel" data-target="#myCarousel" data-slide-to="{{index}}" class="{{slide.class}}"></li>
       </ol>
       <div class="carousel-inner" role="listbox">
-        <div class="item {{slide.class}}" ng-repeat="slide in config.carousel">
+        <div class="item {{slide.class}}" ng-repeat="slide in carousel">
           <img class="first-slide" src="{{slide.imageUrl}}" alt="{{slide.alt}}">
           <div class="container">
             <div class="carousel-caption">
@@ -104,8 +104,8 @@
     </div>
     <div class="container marketing">
       <div class="row">
-        <div class="col-lg-4" ng-repeat="mk in config.marketing[lang]">
-          <div class="featurette-panel panel panel-default" ng-style="config.visual.marketing">
+        <div class="col-lg-4" ng-repeat="mk in marketing">
+          <div class="featurette-panel panel panel-default" ng-style="visual.marketing">
             <div class="center-block featurette-container">
               <span class="icon-{{mk.icon}} img-circle featurette-icon"></span>
             </div>
@@ -119,7 +119,7 @@
     </div>
     <div class="container-fluid marketing marketing-inverse">
       <div class="container">
-        <div ng-repeat="(idx, ft) in config.featurette">
+        <div ng-repeat="(idx, ft) in featurette">
           <div class="row featurette">
             <div class="col-md-5" ng-class="{'col-md-push-7' : idx % 2 == 1}">
               <img class="featurette-image img-responsive center-block" src="{{ft.image}}" alt="Generic placeholder image">
@@ -139,7 +139,7 @@
               </div>
             </div>
           </div>
-          <hr class="featurette-divider text-muted" ng-show="idx < config.featurette.length - 1">
+          <hr class="featurette-divider text-muted" ng-show="idx < featurette.length - 1">
         </div>
 
         <!--div class="row featurette">
@@ -190,12 +190,12 @@
       <div class="container-fluid">
         <div id="footer-links" class="container text-center">
           <div class="row">
-            <div ng-repeat="(ftIndex, ftElem) in config.footer" class="col-md-2 col-sm-3 col-xs-5" ng-class="{'col-md-offset-1' : ftIndex === 0}">
-              <h4 class="text-uppercase text-info" ng-bind="config.dictionary[lang][ftElem.header]"></h4>
+            <div ng-repeat="(ftIndex, ftElem) in footer" class="col-md-2 col-sm-3 col-xs-5" ng-class="{'col-md-offset-1' : ftIndex === 0}">
+              <h4 class="text-uppercase text-info" ng-bind="ftElem.header"></h4>
               <div class="row">
                 <div class="col-xs-6 col-sm-12" ng-repeat="listItem in ftElem.items">
                   <ul class="list-unstyled">
-                    <li ng-repeat="listItem1 in listItem"><a href="{{listItem1.href}}" ng-bind="config.dictionary[lang][listItem1.label]"></a></li>
+                    <li ng-repeat="listItem1 in listItem"><a href="{{listItem1.href}}" ng-bind="listItem1.label"></a></li>
                 </ul>
                 </div>
               </div>
@@ -236,7 +236,7 @@
           <div class="col-md-12">
             <hr />
             <p class="pull-right"><a href="#"><span class="glyphicon glyphicon-chevron-up"></span></a></p>
-            <p class="text-center"> &nbsp; &nbsp; &copy; {{config.thisYear}} {{config.signature[lang]}}</p>
+            <p class="text-center"> &nbsp; &nbsp; &copy; {{thisYear}} {{signature}}</p>
           </div>
         </div>
       </div>
@@ -248,7 +248,6 @@
     <script type="text/javascript" src="js/jquery.orgchart.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/angular.min.js"></script>
-    <script type="text/javascript" src="js/config.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
     <script src="js/holder.min.js"></script>
