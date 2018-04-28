@@ -57,14 +57,14 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle text-uppercase nav-item-main" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="flag flag-{{lang}}"></span> <span class="visible-lg-inline-block" ng-bind="general.language"></span><span ng-bind="'( ' + lang + ' )'" class="highlighted visible-lg-inline-block"></span> <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li ng-repeat="lang in langList"><a href="#{{lang}}"><span class="flag flag-{{lang}}"></span> {{langMap[lang]}}</a></li>
+                <li ng-repeat="lng in langList" ng-click="useLanguage(lng)"><a href="#"><span class="flag flag-{{lng}}"></span> {{langMap[lng]}}</a></li>
                 <!--li><a href="#es"><span class="flag flag-es"></span> Español</a></li>
                 <li><a href="#fr"><span class="flag flag-fr"></span> Français</a></li-->
               </ul>
             </li>
           </ul>
           <ul ng-show="contacts.length > 0" class="nav navbar-nav navbar-right">
-            <p class="navbar-text visible-lg-inline-block" ng-bind="config.dictionary[lang]['followUs']" style="font-style: italic;"></p>
+            <p class="navbar-text visible-lg-inline-block" ng-bind="general.followUs" style="font-style: italic;"></p>
             <p class="navbar-text social-icons">
               <a ng-repeat="contact in contacts" href="{{contact.href}}" class="icon-{{contact.code}} icon-inverse btn-primary img-circle"></a>
               <!--a href="https://twitter.com/TheCubanTech" class="icon-twitter icon-inverse btn-primary img-circle"></a>
